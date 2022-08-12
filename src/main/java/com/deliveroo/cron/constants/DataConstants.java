@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class DataConstants {
-  public static final int EXPRESSION_FIELD_SIZE = 5;
+  public static final int EXPRESSION_FIELD_SIZE = 6;
 
   public static final String INVALID_FIELD_ERROR = "invalid %s field: \"%s\"";
 

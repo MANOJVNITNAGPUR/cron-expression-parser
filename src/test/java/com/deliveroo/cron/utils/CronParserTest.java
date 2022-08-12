@@ -30,15 +30,15 @@ public class CronParserTest {
 
   @Test
   public void numberParseTest() throws InvalidExpressionException {
-    BitSet bitSet = CronParser.parseExpressionPart(CronField.HOUR,"6");
-    Assertions.assertEquals(1,bitSet.cardinality());
+    BitSet bitSet = CronParser.parseExpressionPart(CronField.HOUR, "6");
+    Assertions.assertEquals(1, bitSet.cardinality());
     Assertions.assertTrue(bitSet.get(6));
   }
 
   @Test
   public void rangeParseTest() throws InvalidExpressionException {
-    BitSet bitSet = CronParser.parseExpressionPart(CronField.HOUR,"1-6");
-    Assertions.assertEquals(6,bitSet.cardinality());
+    BitSet bitSet = CronParser.parseExpressionPart(CronField.HOUR, "1-6");
+    Assertions.assertEquals(6, bitSet.cardinality());
     Assertions.assertTrue(bitSet.get(1));
     Assertions.assertTrue(bitSet.get(2));
     Assertions.assertTrue(bitSet.get(3));
@@ -49,16 +49,16 @@ public class CronParserTest {
 
   @Test
   public void rangeParseWithStepTest() throws InvalidExpressionException {
-    BitSet bitSet = CronParser.parseExpressionPart(CronField.HOUR,"1-6/3");
-    Assertions.assertEquals(2,bitSet.cardinality());
+    BitSet bitSet = CronParser.parseExpressionPart(CronField.HOUR, "1-6/3");
+    Assertions.assertEquals(2, bitSet.cardinality());
     Assertions.assertTrue(bitSet.get(1));
     Assertions.assertTrue(bitSet.get(4));
   }
 
   @Test
   public void multiValueTest() throws InvalidExpressionException {
-    BitSet bitSet = CronParser.parseExpressionPart(CronField.HOUR,"1,3,5");
-    Assertions.assertEquals(3,bitSet.cardinality());
+    BitSet bitSet = CronParser.parseExpressionPart(CronField.HOUR, "1,3,5");
+    Assertions.assertEquals(3, bitSet.cardinality());
     Assertions.assertTrue(bitSet.get(1));
     Assertions.assertTrue(bitSet.get(3));
     Assertions.assertTrue(bitSet.get(5));
@@ -66,60 +66,80 @@ public class CronParserTest {
 
   @Test
   public void invalidExpressionTest() {
-    Assertions.assertThrows(InvalidExpressionException.class,()->CronParser.parseExpressionPart(CronField.HOUR,"1tayslk"));
+    Assertions.assertThrows(InvalidExpressionException.class,
+        () -> CronParser.parseExpressionPart(CronField.HOUR, "1tayslk"));
   }
 
   @Test
-  public void minMaxValueValidation(){
-    Assertions.assertThrows(InvalidExpressionException.class,()->CronParser.parseExpressionPart(CronField.HOUR,"-1"));
-    Assertions.assertThrows(InvalidExpressionException.class,()->CronParser.parseExpressionPart(CronField.HOUR,"26"));
+  public void minMaxValueValidation() {
+    Assertions.assertThrows(InvalidExpressionException.class,
+        () -> CronParser.parseExpressionPart(CronField.HOUR, "-1"));
+    Assertions.assertThrows(InvalidExpressionException.class,
+        () -> CronParser.parseExpressionPart(CronField.HOUR, "26"));
 
-    Assertions.assertThrows(InvalidExpressionException.class,()->CronParser.parseExpressionPart(CronField.MINUTE,"-1"));
-    Assertions.assertThrows(InvalidExpressionException.class,()->CronParser.parseExpressionPart(CronField.MINUTE,"65"));
+    Assertions.assertThrows(InvalidExpressionException.class,
+        () -> CronParser.parseExpressionPart(CronField.MINUTE, "-1"));
+    Assertions.assertThrows(InvalidExpressionException.class,
+        () -> CronParser.parseExpressionPart(CronField.MINUTE, "65"));
 
-    Assertions.assertThrows(InvalidExpressionException.class,()->CronParser.parseExpressionPart(CronField.DAY_OF_MONTH,"0"));
-    Assertions.assertThrows(InvalidExpressionException.class,()->CronParser.parseExpressionPart(CronField.DAY_OF_MONTH,"35"));
+    Assertions.assertThrows(InvalidExpressionException.class,
+        () -> CronParser.parseExpressionPart(CronField.DAY_OF_MONTH, "0"));
+    Assertions.assertThrows(InvalidExpressionException.class,
+        () -> CronParser.parseExpressionPart(CronField.DAY_OF_MONTH, "35"));
 
-    Assertions.assertThrows(InvalidExpressionException.class,()->CronParser.parseExpressionPart(CronField.MONTH,"0"));
-    Assertions.assertThrows(InvalidExpressionException.class,()->CronParser.parseExpressionPart(CronField.MONTH,"15"));
+    Assertions.assertThrows(InvalidExpressionException.class,
+        () -> CronParser.parseExpressionPart(CronField.MONTH, "0"));
+    Assertions.assertThrows(InvalidExpressionException.class,
+        () -> CronParser.parseExpressionPart(CronField.MONTH, "15"));
 
-    Assertions.assertThrows(InvalidExpressionException.class,()->CronParser.parseExpressionPart(CronField.DAY_OF_WEEK,"0"));
-    Assertions.assertThrows(InvalidExpressionException.class,()->CronParser.parseExpressionPart(CronField.DAY_OF_WEEK,"9"));
+    Assertions.assertThrows(InvalidExpressionException.class,
+        () -> CronParser.parseExpressionPart(CronField.DAY_OF_WEEK, "0"));
+    Assertions.assertThrows(InvalidExpressionException.class,
+        () -> CronParser.parseExpressionPart(CronField.DAY_OF_WEEK, "9"));
   }
 
   @Test
-  public void rangeMinMaxValidation(){
-    Assertions.assertThrows(InvalidExpressionException.class,()->CronParser.parseExpressionPart(CronField.HOUR,"-1-6"));
+  public void rangeMinMaxValidation() {
+    Assertions.assertThrows(InvalidExpressionException.class,
+        () -> CronParser.parseExpressionPart(CronField.HOUR, "-1-6"));
 
-    Assertions.assertThrows(InvalidExpressionException.class,()->CronParser.parseExpressionPart(CronField.DAY_OF_WEEK,"0-6"));
+    Assertions.assertThrows(InvalidExpressionException.class,
+        () -> CronParser.parseExpressionPart(CronField.DAY_OF_WEEK, "0-6"));
 
-    Assertions.assertThrows(InvalidExpressionException.class,()->CronParser.parseExpressionPart(CronField.DAY_OF_MONTH,"0-35"));
+    Assertions.assertThrows(InvalidExpressionException.class,
+        () -> CronParser.parseExpressionPart(CronField.DAY_OF_MONTH, "0-35"));
   }
 
   @Test
-  public void invalidStepExpressionTest(){
-    Assertions.assertThrows(InvalidExpressionException.class,()->CronParser.parseExpressionPart(CronField.HOUR,"1/"));
+  public void invalidStepExpressionTest() {
+    Assertions.assertThrows(InvalidExpressionException.class,
+        () -> CronParser.parseExpressionPart(CronField.HOUR, "1/"));
   }
 
   @Test
-  public void invalidStepSizeException(){
-    Assertions.assertThrows(InvalidExpressionException.class,()->CronParser.parseExpressionPart(CronField.HOUR,"1/0"));
-    Assertions.assertThrows(InvalidExpressionException.class,()->CronParser.parseExpressionPart(CronField.HOUR,"1/*"));
-    Assertions.assertThrows(InvalidExpressionException.class,()->CronParser.parseExpressionPart(CronField.HOUR,"-1/5"));
+  public void invalidStepSizeException() {
+    Assertions.assertThrows(InvalidExpressionException.class,
+        () -> CronParser.parseExpressionPart(CronField.HOUR, "1/0"));
+    Assertions.assertThrows(InvalidExpressionException.class,
+        () -> CronParser.parseExpressionPart(CronField.HOUR, "1/*"));
+    Assertions.assertThrows(InvalidExpressionException.class,
+        () -> CronParser.parseExpressionPart(CronField.HOUR, "-1/5"));
   }
 
   @Test
   public void validStepExpressionTest() throws InvalidExpressionException {
-    BitSet bitSet = CronParser.parseExpressionPart(CronField.DAY_OF_WEEK,"2/2");
-    Assertions.assertEquals(3,bitSet.cardinality());
+    BitSet bitSet = CronParser.parseExpressionPart(CronField.DAY_OF_WEEK, "2/2");
+    Assertions.assertEquals(3, bitSet.cardinality());
     Assertions.assertTrue(bitSet.get(2));
     Assertions.assertTrue(bitSet.get(4));
     Assertions.assertTrue(bitSet.get(6));
   }
 
   @Test
-  public void invalidRangeTest(){
-    Assertions.assertThrows(InvalidExpressionException.class,()->CronParser.parseExpressionPart(CronField.HOUR,"10-5"));
-    Assertions.assertThrows(InvalidExpressionException.class,()->CronParser.parseExpressionPart(CronField.HOUR,"*-5"));
+  public void invalidRangeTest() {
+    Assertions.assertThrows(InvalidExpressionException.class,
+        () -> CronParser.parseExpressionPart(CronField.HOUR, "10-5"));
+    Assertions.assertThrows(InvalidExpressionException.class,
+        () -> CronParser.parseExpressionPart(CronField.HOUR, "*-5"));
   }
 }

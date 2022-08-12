@@ -16,4 +16,5 @@ public class CronSchedule {
   private BitSet dayOfMonth;
   private BitSet month;
   private BitSet daysOfWeek;
+  private String command;
 }

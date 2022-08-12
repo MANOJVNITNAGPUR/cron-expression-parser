@@ -8,6 +8,7 @@ import com.deliveroo.cron.service.CronExpressionParserService;
 import com.deliveroo.cron.utils.CronParser;
 import com.deliveroo.cron.utils.StringUtils;
 
+import java.util.Arrays;
 import java.util.BitSet;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,12 +23,19 @@ public class CronExpressionParserServiceImpl implements CronExpressionParserServ
       throw new InvalidExpressionException(DataConstants.CRON_EXPRESSION_IS_EMPTY);
     }
 
-    String[] cronExpressionFields = expression.trim().toLowerCase().split(EXPRESSION_SPLITTER);
-    if (DataConstants.EXPRESSION_FIELD_SIZE != cronExpressionFields.length) {
+    String[] expressionFields = expression.trim().toLowerCase().split(EXPRESSION_SPLITTER);
+    if (DataConstants.EXPRESSION_FIELD_SIZE != expressionFields.length) {
       throw new InvalidExpressionException(DataConstants.CRON_EXPRESSION_FIELD_COUNT_ERROR);
     }
-    CronSchedule cronSchedule = CronSchedule.builder().cronExpression(expression).build();
+    String[] cronExpressionFields = Arrays.copyOfRange(expressionFields, 0, expressionFields.length - 1);
+    String command = expressionFields[5];
+
+    CronSchedule cronSchedule = CronSchedule.builder()
+        .cronExpression(String.join(" ", cronExpressionFields))
+        .command(command).build();
+
     BitSet bitSet;
+
     for (CronField cronField : CronField.values()) {
       bitSet = parseExpressionPart(cronExpressionFields, cronField);
       setBitset(cronField, cronSchedule, bitSet);

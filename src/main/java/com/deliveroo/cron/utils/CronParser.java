@@ -86,14 +86,14 @@ public class CronParser {
     }
 
     BitSet bitSet = new BitSet(cronField.getLength());
-    bitSet.set(from, to+1);
+    bitSet.set(from, to + 1);
     return bitSet;
 
   }
 
   private static BitSet parseAsterisk(CronField cronField) {
-    BitSet bitSet = new BitSet(cronField.getLength()+cronField.getMinimumValue());
-    bitSet.set(cronField.getMinimumValue(), cronField.getMaximumValue()+1);
+    BitSet bitSet = new BitSet(cronField.getLength() + cronField.getMinimumValue());
+    bitSet.set(cronField.getMinimumValue(), cronField.getMaximumValue() + 1);
     return bitSet;
   }
 
